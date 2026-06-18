@@ -14,12 +14,17 @@ class QAExample(BaseModel):
     context: list[ContextChunk]
 
 class JudgeResult(BaseModel):
-    # TODO: Học viên định nghĩa các trường cần thiết cho kết quả đánh giá (score, reason, ...)
-    pass
+    score: int  # 1 = đáp án đúng, 0 = sai
+    reason: str  # giải thích vì sao chấm điểm như vậy
+    missing_evidence: list[str] = Field(default_factory=list)  # bằng chứng còn thiếu
+    spurious_claims: list[str] = Field(default_factory=list)  # khẳng định sai/thừa
+    failure_mode: str = "none"  # loại lỗi khi sai (none nếu đúng)
 
 class ReflectionEntry(BaseModel):
-    # TODO: Học viên định nghĩa các trường cần thiết cho một mục reflection (attempt_id, lesson, strategy, ...)
-    pass
+    attempt_id: int  # lần thử đã thất bại
+    failure_reason: str  # nguyên nhân thất bại (thường lấy từ judge.reason)
+    lesson: str  # bài học rút ra
+    next_strategy: str  # chiến thuật cho lần thử kế tiếp
 
 class AttemptTrace(BaseModel):
     attempt_id: int
